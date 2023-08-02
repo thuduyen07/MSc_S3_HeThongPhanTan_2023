@@ -1,2 +1,3 @@
-# MSc_S3_HeThongPhanTan
-Distributed Systems
+# Distributed Systems
+
+This is the repo of Distributed Systems course
