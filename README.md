@@ -11,6 +11,7 @@ This is the repo of Distributed Systems course
 
 ## Lab02
 [rpc](https://pkg.go.dev/net/rpc)
+[lab02 submit link](https://docs.google.com/forms/d/e/1FAIpQLSfCGAMuYYLqXx6jTMc3Fmx5dyTD5aJIQPshe8XjIMaf3YvZlw/viewform)
 ## Lecture 03
 
 ## Lab03
