@@ -1,0 +1,21 @@
+Sum is  500500
+10
+20
+30
+40
+50
+0
+10
+1
+20
+2
+30
+3
+40
+4
+50
+Server 1:  Gaugau ,  1
+Server 2:  MeoMeo ,  2
+Server 3:  Angang ,  3
+Method of struct Server
+131
