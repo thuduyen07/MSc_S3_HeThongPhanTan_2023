@@ -15,3 +15,13 @@ This is the repo of Distributed Systems course
 ## Lecture 03
 
 ## Lab03
+
+## Lecture 04
+
+Các server phân biệt với nhau bằng IP (và port)
+
+Trong key-value store, thêm phần replication vào. Mỗi lần user set giá trị vào bảng key-value khi put dữ liệu lên, ta cần copy dữ liệu qua các server còn lại (giả sử là 5 server)
+
+Deadline: 16h00 11/08/2023
+
+Link: https://docs.google.com/forms/d/e/1FAIpQLSdc2hOqxAeM4oY5JvTxe8kG6YGj67zF27OcAZXZI236IFFkew/viewform
