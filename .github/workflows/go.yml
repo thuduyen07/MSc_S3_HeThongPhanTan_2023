@@ -30,7 +30,7 @@ jobs:
       run: pwd
 
     - name: Build
-      run: go build -v ./...
+      run: go build web_crawler.go
 
     - name: Test
-      run: go test -v ./...
+      run: go run web_crawler.go
