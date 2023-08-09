@@ -17,3 +17,24 @@ This is the repo of Distributed Systems course
 ## Lab03
 
 ## Lecture 04
+
+Các server phân biệt với nhau bằng IP (và port)
+
+Trong key-value store, thêm phần replication vào. Mỗi lần user set giá trị vào bảng key-value khi put dữ liệu lên, ta cần copy dữ liệu qua các server còn lại (giả sử là 5 server)
+
+Các test cases:
+- TC_01: Put/get
+- TC_02: Put/get when primary is dead
+- TC_03: put and get in slow network 
+
+hàm ping để kiểm tra primary server còn sống
+
+tất cả các server tự gửi cho nhau bằng hàm check để lấy một cặp ip-version, chờ vài chục giây -> chọn version cao nhất và ip thấp nhất làm primary mới nếu primảy hiện tại chớt
+
+các máy phải lưu primary_ip, có biến isPrimary
+
+
+Deadline: 16h00 18/08/2023
+
+Link: https://docs.google.com/forms/d/e/1FAIpQLSdc2hOqxAeM4oY5JvTxe8kG6YGj67zF27OcAZXZI236IFFkew/viewform
+
