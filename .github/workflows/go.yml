@@ -23,14 +23,10 @@ jobs:
       with:
         go-version: '1.20'
         
-    - name: navigate to lab01 folder
-      run: cd labs/lab01
-      
-    - name: Print current path
-      run: pwd
+    - name: Run Lab01 Web Crawler
+      run: |
+        cd labs/lab01
+        pwd 
+        go build web_crawler.go
+        go run web_crawler.go
 
-    - name: Build
-      run: go build web_crawler.go
-
-    - name: Test
-      run: go run web_crawler.go
