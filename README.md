@@ -38,3 +38,15 @@ Deadline: 16h00 18/08/2023
 
 Link: https://docs.google.com/forms/d/e/1FAIpQLSdc2hOqxAeM4oY5JvTxe8kG6YGj67zF27OcAZXZI236IFFkew/viewform
 
+dành riêng một IP để client connect đến, nếu primary chớt thì thằng mới vẫn listen thằng IP đó, và một lúc chỉ có một ông listen để tránh conflict
+
+consistency: tính nhất quán. Ví dụ: 
+- set x=1 thì get x phải bằng 1 ==> read-your-write consistency 
+- eventual consistency
+- client set x=1 --get-x--> set x=3 --get-x  ==> sequentual consistency
+
+xử lí tình huống mạng chậm -> set x=1 đến sau set x=3
+- gửi thêm timeStamp 
+- sử dụng NTP (một loại time server) để triển khai đồng hồ dùng chung
+- [Lamport Clock](https://en.wikipedia.org/wiki/Lamport_timestamp)
+
