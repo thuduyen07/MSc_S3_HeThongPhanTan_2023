@@ -30,3 +30,27 @@ jobs:
         go build web_crawler.go
         go run web_crawler.go
 
+    - name: Run Lab02 Simple Client-Server Demo
+      run: |
+        cd labs/lab02
+        pwd 
+        go build client.go
+        go build server.go
+        go build key_value_store.go
+        go run client.go
+        go run server.go
+        go run key_value_store.go
+
+    - name: Run Lab03 Simple Replication Demo
+      run: |
+        cd labs/lab03
+        pwd 
+        go build primary.go
+        go build secondary.go
+        go build client_01.go
+        go build client_02.go
+
+        go run primary.go
+        go run secondary.go
+        go run client_01.go
+        go run client_02.go
