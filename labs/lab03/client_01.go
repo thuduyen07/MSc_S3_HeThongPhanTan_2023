@@ -1,4 +1,4 @@
-package main
+package lab03
 
 import (
 	"fmt"
@@ -8,14 +8,11 @@ import (
 
 type Args struct {
 	Data string
-}
-
-type Args struct {
 	Ping string
 }
 
 func IsServerActive(client *rpc.Client) bool {
-	pingMessage := "Ping from client"
+	pingMessage := "Ping from client_01"
 	var reply string
 
 	err := client.Call("Server.PingPong", Args{pingMessage}, &reply)
@@ -28,20 +25,20 @@ func IsServerActive(client *rpc.Client) bool {
 }
 
 func main() {
-	client, err := rpc.Dial("tcp", "server1_address:port")
+	client, err := rpc.Dial("tcp", "127.0.0.1:8888")
 	if err != nil {
-		fmt.Println("Error connecting to Server 1:", err)
+		fmt.Println("Error connecting to Primary Server :", err)
 		return
 	}
 
-	args := Args{"Hello from Client 1"}
+	args := Args{"Hello from Client_01"}
 	var reply string
 	err = client.Call("Server.ProcessData", args, &reply)
 	if err != nil {
-		fmt.Println("Error calling Server 1:", err)
+		fmt.Println("Error calling Primary Server:", err)
 		return
 	}
-	fmt.Println("Server 1 Response:", reply)
+	fmt.Println("Primary Server Response:", reply)
 
 	client.Close()
 }
