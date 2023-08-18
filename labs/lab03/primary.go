@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"net/rpc"
+	"time"
 )
 
 type Args struct {
@@ -14,6 +15,16 @@ type Server struct{}
 
 func (s *Server) ProcessData(args Args, reply *string) error {
 	*reply = "Server 1 processed: " + args.Data
+	return nil
+}
+
+type Args struct {
+	Ping string
+}
+
+func (s *Server) PingPong(args Args, reply *string) error {
+	fmt.Println("Server received ping:", args.Ping)
+	*reply = "Pong from the server"
 	return nil
 }
 
