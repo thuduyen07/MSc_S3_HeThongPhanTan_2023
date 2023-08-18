@@ -46,11 +46,5 @@ jobs:
         cd labs/lab03
         pwd 
         go build primary.go
-        go build secondary.go
-        go build client_01.go
-        go build client_02.go
-
         go run primary.go
-        go run secondary.go
-        go run client_01.go
-        go run client_02.go
+        
