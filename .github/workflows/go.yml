@@ -41,10 +41,10 @@ jobs:
     #     go run server.go
     #     go run key_value_store.go
 
-    - name: Run Lab03 Simple Replication Demo
-      run: |
-        cd labs/lab03
-        pwd 
-        go build primary.go
-        go run primary.go
+    # - name: Run Lab03 Simple Replication Demo
+    #   run: |
+    #     cd labs/lab03
+    #     pwd 
+    #     go build primary.go
+    #     go run primary.go
         
