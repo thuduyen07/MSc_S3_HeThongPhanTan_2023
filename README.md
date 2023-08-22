@@ -38,3 +38,36 @@ Deadline: 16h00 18/08/2023
 
 Link: https://docs.google.com/forms/d/e/1FAIpQLSdc2hOqxAeM4oY5JvTxe8kG6YGj67zF27OcAZXZI236IFFkew/viewform
 
+## 220823
+## Fault Tolerance
+
+Chọn ông leader
+
+- nếu leader chớt (crash) thì dữ liệu của nó đi đâu về đâu? -> dữ liệu store trên ram sẽ mất hoàn toàn -> chọn new leader
+
+- nếu đã chớt mà sống lại (restore) -> liên hệ new leader để copy dữ liệu sang -> không khả thi trong thực tế vì mấy ngàn server, dữ liệu rất lớn -> lưu dữ liệu về local định kỳ (snapshot) (không lưu ram như ở trên) -> thiếu nhiêu thì mới bắt đầu hỏi new leader để copy qua
+
+các cách một dev lưu hashtable vào file/database:
+- value<khoảng trắng>key
+- cứ x-byte đọc thành 1 giá trị
+- lưu dạng xml
+- lưu dạng json
+
+làm sao để biết file của leader vừa chớt và new leader khác nhau chỗ nào =))
+- lưu hành động của client bằng một cái file (write_head_log file)
+
+| thứ tự | operation | operation | process|
+|--------|-----------|-----------|--------|
+|   1    |    _      |  x=1      |  v     |
+|   2    |    -      |  w=2      |  x     |
+
+Các server đều có một file log, khi có vấn đề xảy ra, ta chỉ cần copy các dòng thiếu của các file log với nhau
+
+Replicated State Machine
+![Replicated State Machine](image.png)
+
+
+
+
+
+
