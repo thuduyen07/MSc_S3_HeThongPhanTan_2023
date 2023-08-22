@@ -63,11 +63,80 @@ làm sao để biết file của leader vừa chớt và new leader khác nhau c
 
 Các server đều có một file log, khi có vấn đề xảy ra, ta chỉ cần copy các dòng thiếu của các file log với nhau
 
-Replicated State Machine
+Replicated State Machine: 
+Ý tưởng là làm ra một hệ thống không bao giờ chớt -- trách nhiệm không bao giờ chớt (luôn có người chịu trách nhiệm)
 ![Replicated State Machine](image.png)
 
+Ref:
+- https://github.com/eliben/raft
+- https://eli.thegreenplace.net/2020/implementing-raft-part-0-introduction/
+- https://raft.github.io/
 
 
+Quy tắc vote:
+- lượng phiếu bầu lớn hơn 50% thì thắng
+- nếu số phiếu bằng nhau -> vote lại
+- mỗi người dc vote một lần
+- nếu một người vận động (A) một người khác (B) mà người đó (B) chưa vote cho ai thì phải vote cho người vận động (A)
+- term và length(log) phải lớn hơn mỗi server khác đang xét
+
+- election timer (các timer này tại khác server và set thời gian lặp khác nhau, vd: *0.001*(timer reset của leader--ping timer)-1-2-3-5-7-10)
+    - nếu timer vừa hết mà chưa bầu ai, thì bầu cho mình và gửi request tới những người khác bầu cho mình
+    - khi đã bầu thì reset timer để chạy lại từ đầu
+    - leader có 2 timer, một election, một để reset timer các timer của các server khác
+
+Một server có 3 trạng thái
+- follower - khi vừa start, và có election timer 
+- candidate - khi election timer vừa hết
+- leader - khi nhận được nhiều hơn 50% phiếu bầu, bắt đầu start ping timer (timer này ngắn, vd: 15s)
+
+Trường hợp leader không chớt mà chỉ disconnect, khi đó, nó không restart để trở thành follower lại mà vẫn giữ trạng thái leader 
+- dùng cơ chế safety: lưu lại nhiệm kỳ (term)
+mỗi election timer hết thì cập nhật term thêm 1 đơn vị,
+
+tất cả request sẽ đi kèm với term, nếu term nhỏ hơn thì hoy nghỉ chơi :'> 
+
+leader cũ khi gặp request ping timer có term lớn hơn bản thân -> trở thành follower, bỏ ping timer đang có
+
+số server nên là 2f+1 để có số lượng vote có thể đạt được max là f+1, 
+
+số server được phép down là f, khi số server down vượt qua số lượng này, hệ thống đứng im, không làm gì nữa cả, tránh trường hợp sai sót
+
+ping timer phải đủ nhỏ để tránh các server khác bầu liên tục gây lãng phí (nên nhỏ hơn thằng nhỏ nhất???)
+
+membership change using timer machinism, length(log) và term - RAFT
+![timer machine](image-1.png)
+
+ta chỉ cần replicate lại f+1 cái trên tổng số 2f+1 server là đã có thể trả lời cho client là đã thành công
+
+| primary                             |   leader  |
+|-----------                          |-----------|
+|người replicate dữ liệu dưới database| người phân quyền, không bao giờ chớt|
 
 
+- cơ chế liveness
+
+Cả hai phương pháp RAFT và PAXOS đều giải quyết bài toán 
+|RAFT       | PAXOS     |
+|---        |---        |
+|chứng minh một phần trong bài báo, dễ hiểu =))|được toán học chứng mình và công nhận đồ, khó hiểu, khó implement, mặc dù đã được [google spanner](https://cloud.google.com/spanner/docs/replication), microsoft implement |
+|dùng 2 timer: ping và election | dùng timer nhưng dùng kiểu khác |
+
+### Giới thiệu Lab04
+Chỉnh lại 2 con số timer (15s vs 300s chỉnh thành 2 số khác thử) để chạy lại mã nguồn và hiểu dc source
+
+16h00, 23/08/2023
+https://docs.google.com/forms/d/e/1FAIpQLSdlwRRDMkdRRVjl30ijyV1OpfzXjagWRmaFv3Jgi9IG_VTFLg/viewform
+
+https://github.com/eliben/raft/tree/master/part1
+
+Ý tưởng: ông leader luôn có log ukie nhất, có cơ chế gửi đến các follower nội dung client request 
+
+mỗi log đi kèm term 
+
+khi leader gửi log mới và record log ngay phía trước tới mỗi server, mỗi server sẽ thực hiện so sánh record ngay trước với record cuối của mình xem trùng không, nếu trùng thì ngon :v
+
+trường hợp không trùng, follower response lại là not match, leader gửi lại 2 record trước và log mới, và server nhận được lại tiếp tục so sánh, hành động này được lặp lại cho đến khi gặp được dòng trùng và chèn hết cái nùi mới nhận mà trùng dô
+
+leader không được phép thay đổi log của mình, follower thì được phép thay đổi.
 
