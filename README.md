@@ -153,3 +153,58 @@ trường hợp không trùng, follower response lại là not match, leader g�
 leader không được phép thay đổi log của mình, follower thì được phép thay đổi.
 
 
+## 290823
+
+Thuật toán đồng thuận: có nhiều máy chủ, đề xuất nhiều thông tin và sau khi đã đồng ý với nhau thì ở đầu ra chỉ có một thông tin đồng nhất --> thuật toán này không có leader/ người quan sát như lab04 (raft) đã làm
+- các yêu cầu consensus: (một số pp như RAFT, PAXOS)
+    - termination: thuật toán phải kết thúc -- raft không đảm bảo điều kiện này khi các khoảng thời gian trùng nhau 
+    - agreement: phải có một kết quả đồng thuận cuối cùng
+    - validality: kết quả đầu ra phải nằm trong các đề xuất đã đưa ra ban đầu (tính hợp lệ)
+
+File log: ghi 
+
+Keyword: Replicated state machine -- consensus 
+
+[FLP](https://ilyasergey.net/CS6213/week-03-bft.html#:~:text=The%20FLP%20theorem%20states%20that,one%20node%20may%20experience%20failure.): nói về một định lý rằng không có một thuật toán nào đảm bảo được cả ba yêu cầu consensus (termination, agreement, validality) với điều kiện có ít nhất 1 máy có thể chớt bất cứ lúc nào. Đã được chứng minh bằng toán học.
+
+## Wrap-up Replication
+về mặt lý thuyết thuật toán này có thể chạy mãi mãi
+
+Leader election: 
+
+Cấu trúc file log trong raft:
+- mỗi dòng là 1 record gồm: 
+    - số thứ tự (quan trọng nhất) (index - phải gửi request đi tới các máy chủ khác)
+    - term 
+    - command/operator 
+    - parameter 
+    - value
+
+![RAFT log](RaftLog.png)
+
+1 record khi lưu được trên f+1 trên tổng số 2f+1 máy chủ -> record's index đó sẽ được gọi là commited index -- khác index (chỉ nói đến thứ tự dòng record)
+
+term: term của record đó -- khác với currentTerm: term hiện hành
+
+các file log ở các máy chủ có thể rất khác nhau, nhưng phải có ít nhất f+1 máy chủ có commited index giống hệt nhau
+
+leader gửi index và term previous record và nguyên record hiện tại
+
+máy chủ có index nhỏ hơn commited index thì không được phép trở thành leader
+
+replicated rule: 
+- currentTerm == term thì replicate dễ -> ghi f+1 thì set commited index liền được
+- trong trường hợp hai record khác term, nghĩa là có ít nhất 1 record có term khác currentTerm -> buộc phải wait để các record của term trước current term đã được replicate và commit
+
+wrap-up:
+- các file log không nhất thiết giống nhau 
+- quy tắc back-up dữ liệu (thêm một cái phía trước) -> khi chưa trùng thì back thêm về đến khi trùng và chờ replicate từ chỗ trùng đến chỗ mới nhất, khi thành công hết rồi mới trả về thành công
+- currentTerm khác term trong record đang cần commit thì phải wait cho có ít nhất một record phía trước (xem thêm trong paper)
+
+Snapshot: luôn phải triển khai trong thực tế
+
+thêm máy vào như nào :'> --> quorum và id thay đổi... (gọi là configure) -- bắt nguồn từ request của client -- không tắt máy và đổi file config nha ba =))
+
+làm thế nào để các máy khác biết có máy mới? (ghi vào 1 entry gọi là special và replicate như 1 record) -> nếu nhận được thì đổi thuật toán cho phù hợp với các config mới :'> (ví dụ số máy để có thể xác nhận commited index)
+
+## tuần sau sharding, 
