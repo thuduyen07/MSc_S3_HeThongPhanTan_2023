@@ -207,4 +207,66 @@ thêm máy vào như nào :'> --> quorum và id thay đổi... (gọi là config
 
 làm thế nào để các máy khác biết có máy mới? (ghi vào 1 entry gọi là special và replicate như 1 record) -> nếu nhận được thì đổi thuật toán cho phù hợp với các config mới :'> (ví dụ số máy để có thể xác nhận commited index)
 
-## tuần sau sharding, 
+## 050923
+
+Một số lỗi thường gặp:
+1. Fail-stop
+2. Fail-restart
+3. Omission
+4. Byzatine fault
+![Một số lỗi hệ thống thường gặp]](image-2.png)
+
+CAP => Định lí cho rằng không thể xây dựng được hệ thống mà khi mạng đứt kết quả vẫn trả về đúng và kịp thời. Chỉ có thể chấp nhận một trong hai kêta quả sau. một là, hệ thống tạm ngừng hoạt động, hai là kết quả trả về trễ. 
+
+[Eventual consistency](https://www.baeldung.com/cs/eventual-consistency-vs-strong-eventual-consistency-vs-strong-consistency)
+![](./eventual-consistency.png)
+
+The CAP theorem states that distributed databases can have at most two of the three properties: consistency, availability, and partition tolerance. As a result, database systems prioritize only two properties at a time. 
+
+[the-cap-theorem-in-dbms](https://www.geeksforgeeks.org/the-cap-theorem-in-dbms/)
+
+
+để các server không bị quá tải, ta làm như sau:
+- dùng nhiều máy
+- lưu xoay vòng giữa các máy
+- request thứ R sẽ được lưu vào server thứ (R mod n)+1, trong đó n là tổng số server có
+- lưu file config -> không dùng do bự và nguy hiểm khi file này gặp vấn đề
+- giới thiệu [Luhn Hash Algo](https://en.wikipedia.org/wiki/Luhn_algorithm) (the first hash algo)
+![Alt text](image-3.png)
+
+- nên lưu một server với vài ip, khi hash ta sẽ hash dc thành 5 số -> để tìm server lưu nhanh hơn và có thể chia đều dữ liệu cho các server??
+
+- ý tưởng: 
+key -> number A -> hash(number) -> number B -> chọn server lưu 
+
+khi thêm một server vào, ta phải chuyển dữ liệu đi tè le 
+**18 (hash_3) -> server 1 -> hash_5 -> server 4**
+
+19 (hash_3) -> server 2 -> hash_5 -> server 5
+
+20 (hash_3) -> server 3 -> hash_5 -> server 1
+
+**21 (hash_3) -> server 1 -> hash_5 -> server 2**
+
+-> consistent hashing ra đời nhằm giải quyết vấn đề này
+
+Bước 1: hash ip tất cả server thành số
+
+ví dụ
+hash(server1) = 4
+
+hash(server2) = 6
+
+hash(server3) = 10
+
+khi nhận được một cái key, ta hash key vừa nhận, và theo chiều kim đồng hồ, gặp thằng nào đầu tiên thì lưu dô thằng đó 
+
+ví dụ: key = gaugaumeomeo -> hash(key) = 5 -> lưu vào server 2
+
+![Alt text](image-4.png)
+
+[Sharding](https://www.geeksforgeeks.org/database-sharding-a-system-design-concept/)
+
+Ref. https://www.inf.ed.ac.uk/teaching/courses/ds/handouts/handout12.pdf
+
+## tuần sau distributed trasaction
