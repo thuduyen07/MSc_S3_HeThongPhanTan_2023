@@ -269,4 +269,39 @@ ví dụ: key = gaugaumeomeo -> hash(key) = 5 -> lưu vào server 2
 
 Ref. https://www.inf.ed.ac.uk/teaching/courses/ds/handouts/handout12.pdf
 
-## tuần sau distributed trasaction
+## tuần sau distributed transaction
+
+## 120923
+## Distributed transaction - Lab06
+
+Tài liệu và thông tin cho bài lab 06 (Distributed Transactions):
+
+1. Các bạn tham khảo các liên kết bên dưới để chuẩn bị cho bài lab.
+
+https://drive.google.com/file/d/1RVB_FfQOwkQh6iKn0LgSsQstZ6TOFAO6/view?usp=sharing
+
+https://drive.google.com/file/d/1btr4FyCfdnEIODiFkrNRsqgl2TOwBn_X/view?usp=sharing
+
+https://amturing.acm.org/award_winners/gray_3649936.cfm
+
+https://drive.google.com/file/d/1pWGgNpWPbRpVHpejTby_5nyOerJTra9e/view?usp=drive_link
+
+https://drive.google.com/file/d/1xRXaq9-QVCIvdscCe5oTWmBHuFKuvaem/view?usp=sharing (Chapter 17, 18, 19, 23)
+
+2. Tại lớp các bạn sẽ viết một chương trình hỗ trợ distributed transactions bằng cách sử dụng các thư viện, frameworks, và cơ sở dữ liệu phân tán có sẵn, triển khai trên một cụm máy chủ.
+
+Một số ví dụ tham khảo: 
+
+- TranserMoney(X, Y, 1) (các khóa X, Y nằm trên 2 máy chủ khác nhau), 
+
+- BookTrip("Car", 1, "HotelRoom", 2, "Flight", 3) (các khóa "Car", "HotelRoom", "Flight" nằm trên 3 máy chủ khác nhau).
+
+Các bạn tham khảo thêm:
+
+- https://apple.github.io/foundationdb/class-scheduling-go.html
+
+- https://apple.github.io/foundationdb/building-cluster.html
+
+- https://www.mongodb.com/docs/manual/core/transactions/
+
+- https://www.mongodb.com/docs/manual/tutorial/deploy-shard-cluster/
