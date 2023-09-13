@@ -269,7 +269,9 @@ ví dụ: key = gaugaumeomeo -> hash(key) = 5 -> lưu vào server 2
 
 Ref. https://www.inf.ed.ac.uk/teaching/courses/ds/handouts/handout12.pdf
 
-## tuần sau distributed transaction
+![Alt text](image-5.png)
+
+![Alt text](image-6.png)
 
 ## 120923
 ## Distributed transaction - Lab06
@@ -305,3 +307,62 @@ Các bạn tham khảo thêm:
 - https://www.mongodb.com/docs/manual/core/transactions/
 
 - https://www.mongodb.com/docs/manual/tutorial/deploy-shard-cluster/
+
+Ghi chú: Khi đi thi mang theo:
+- bản in các bài lab đã làm
+- 1 tờ giấy
+- bút
+
+Ví dụ:
+A = $100, B = $70
+
+Transaction_01:
+```
+BEGIN
+    PREPARE Transaction_01
+    LOCK A
+    HOLD LOCK A
+    GET(A) --> 100
+    A = A - 5 --> 95
+    SET(A, 95)
+    GET(B) --> 70
+    B = B + 5 --> 75
+    SET(B, 75)
+    COMMIT --> lưu vào / ROLL BACK hoặc ABORT để xử lí lỗi
+    RELEASE A --> tránh trường hợp 2 transaction xử lý chéo và gặp lỗi khi 1 trong 2 transaction gặp lỗi và roll back/abort
+END
+```
+
+Các transaction cần thoả bốn tính chất sau:
+1. Atomic: các câu lệnh của 1 gói không chạy, hoặc chạy và phải thành công hết
+2. Consistency: trong transaction, serialibility/serializable consistency, kết quả phải nhất quán
+3. Isolation: các câu lệnh của 1 gói đang chạy thì câu lệnh của gói khác chen ngang, một là chạy toàn bộ câu lệnh của transaction_01 rồi mới chạy transaction_02 hoặc ngược
+4. Durability: Kết quả phải được lưu vào database và không được bị mất trong các trường hợp lỗi
+
+việc chạy tuần tự các transaction tốn thời gian -> chạy song song khi các transaction không truy cập vào cùng một khoá, nếu cùng khoá ta lock lại và xử lí lần lượt
+
+
+### Lock manager
+
+|Key    | Lock  | Queue     |Who             |
+|-------|-------|-----------|----------------|
+|A      |true   |T gaugau   |Transaction_01  |
+
+Two-phase commit:
+
+sau khi gửi ok transaction coordinator chỉ được gửi commit hoặc abort, tuyệt đối không roll back, chỉ roll back ở giai đoạn prepare
+
+trường hợp message commit bị loss -> gửi lại kèm id 
+
+lưu ý tất cả các message buộc phải có transaction id và message id duy nhất để phân biệt
+
+Quan trọng: transaction coordinator buộc phải ghi commit vào file log của nó trước khi gửi yêu cầu commit 
+
+Làm thế nào để roll back một transaction:
+- 
+
+Two-phase locking: 
+
+Two-phase commit: 
+
+Giới thiệu distributed system framework (for java): https://seata.io/en-us/docs/user/microservice.html

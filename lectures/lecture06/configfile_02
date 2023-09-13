@@ -1,0 +1,7 @@
+# Create the Shard Replica Sets
+sharding:
+    clusterRole: shardsvr
+replication:
+    replSetName: <replSetName>
+net:
+    bindIp: localhost,<ip address>
