@@ -1,4 +1,4 @@
-package lecture06
+package main
 
 import (
 	"context"
@@ -9,10 +9,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func main() {
+func connect() {
 	// Use the SetServerAPIOptions() method to set the Stable API version to 1
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI("mongodb+srv://thuduyenhocmsc:<password>@cluster0.dzmppq0.mongodb.net/?retryWrites=true&w=majority").SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI("mongodb+srv://thuduyenhocmsc:D051199d@cluster0.dzmppq0.mongodb.net/?retryWrites=true&w=majority").SetServerAPIOptions(serverAPI)
 
 	// Create a new client and connect to the server
 	client, err := mongo.Connect(context.TODO(), opts)
