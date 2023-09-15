@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	mongoURI     = "mongodb+srv://thuduyenhocmsc:D051199d@cluster0.dzmppq0.mongodb.net/"
+	mongoURI     = "mongodb+srv://thuduyenhocmsc:<my-pass>@cluster0.dzmppq0.mongodb.net/"
 	dbName       = "bank"
 	collection   = "accounts"
 	transaction1 = "user1"
@@ -33,7 +33,7 @@ func WithTransactionExample(ctx context.Context) error {
 	// For a sharded cluster, connect to the mongos instances; e.g.
 	// uri := "mongodb://mongos0.example.com:27017,mongos1.example.com:27017/"
 	// uri := mtest.ClusterURI()
-	uri := "mongodb+srv://thuduyenhocmsc:D051199d@cluster0.dzmppq0.mongodb.net/"
+	uri := "mongodb+srv://thuduyenhocmsc:<my-pass>@cluster0.dzmppq0.mongodb.net/"
 
 	clientOpts := options.Client().ApplyURI(uri)
 	client, err := mongo.Connect(ctx, clientOpts)
