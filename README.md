@@ -12,6 +12,7 @@ This is the repo of Distributed Systems course
 ## Lab02
 [rpc](https://pkg.go.dev/net/rpc)
 [lab02 submit link](https://docs.google.com/forms/d/e/1FAIpQLSfCGAMuYYLqXx6jTMc3Fmx5dyTD5aJIQPshe8XjIMaf3YvZlw/viewform)
+[Giới thiệu về RPC](https://zalopay-oss.github.io/go-advanced/ch3-rpc/ch3-01-rpc-go.html)
 ## Lecture 03
 
 ## Lab03
